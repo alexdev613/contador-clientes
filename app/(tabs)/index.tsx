@@ -1,22 +1,51 @@
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { useState } from "react";
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 
 export default function App() {
+  const [contador, setContador] = useState(0);
+  const [limite, setLimite] = useState(10);
+
+  function mudarContador(contador: number) {
+
+    if (contador <= -1) return;
+
+    if (contador >= limite) {
+      setContador(10);
+      return;
+    }
+
+    setContador(contador);
+
+  }
+
   return (
     <View style={styles.constainer}>
       <Text style={styles.title}>Pessoas no restaurante:</Text>
 
+      {contador >= limite && (
+        <Text style={styles.warning}>
+          Restaurante está no seu limite de pessoas
+        </Text>
+      )}
+
+      {contador <= 0 && (
+        <Text style={styles.warning}>
+          Restaurante está sem clientes
+        </Text>
+      )}
+
       <View style={styles.caixaContadora}>
-        <Text style={styles.textoContador}>1</Text>
+        <Text style={styles.textoContador}> {contador} </Text>
       </View>
 
       <View style={styles.areaBtns}>
-        <TouchableOpacity style={styles.btn}>
+        <Pressable style={styles.btn} onPress={() => mudarContador(contador + 1)}>
           <Text style={styles.btnTexto}>Adicionar</Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity style={styles.btn}>
+        <Pressable style={styles.btn} onPress={() => mudarContador(contador - 1)}>
           <Text style={styles.btnTexto}>Remover</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   )
@@ -32,7 +61,7 @@ const styles = StyleSheet.create({
     color: "#111",
     fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 20
+    marginBottom: 20,
   },
   caixaContadora: {
     backgroundColor: "#222",
@@ -58,7 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#00aeef",
+    backgroundColor: "#007bff",
     height: 40,
     margin: 18,
     borderRadius: 6,
@@ -68,4 +97,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#FFF",
   },
+  warning: {
+    backgroundColor: "#F8B135",
+    padding: 4,
+    borderRadius: 4,
+    marginBottom: 10,
+  }
 });
